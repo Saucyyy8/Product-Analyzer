@@ -145,13 +145,15 @@ A single endpoint that intelligently handles both URL and text description input
     * For URL Analysis:
         ```json
         {
-          "input": "[https://www.amazon.in/dp/B08XYZ123](https://www.amazon.in/dp/B08XYZ123)"
+          "input": "[https://www.amazon.in/dp/B08XYZ123](https://www.amazon.in/dp/B08XYZ123)",
+           "type": "url"
         }
         ```
     * For Description Analysis:
         ```json
         {
-          "input": "A quiet mechanical keyboard from logitech"
+          "input": "A quiet mechanical keyboard from logitech",
+           "type": "description"
         }
         ```
 * **Success Response (200 OK):**
