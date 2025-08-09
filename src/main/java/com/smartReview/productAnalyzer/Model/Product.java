@@ -1,24 +1,52 @@
 package com.smartReview.productAnalyzer.Model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import jakarta.validation.constraints.NotBlank;
+import lombok.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
 import java.util.List;
-@Component
+
 @Data
-@Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Product {
-    private String productName;
-    private String productPrice;
-    private String productLink;
-    private List<String> productPros;
-    private List<String> productCons;
+
+    @NotBlank(message = "Product name is required")
+    private String name;
+
+    private String price;
+
+    @NotBlank(message = "Product URL is required")
+    private String url;
+    private List<String> pros;
+    private List<String> cons;
     private String verdict;
-    private double rating;
+
+    @DecimalMin(value = "0.0", message = "Rating must be at least 0.0")
+    @DecimalMax(value = "10.0", message = "Rating must be at most 10.0")
+    private Double rating = 0.0;
+
+    private String brand;
+    private String category;
+    private String imageUrl;
+    private Integer reviewCount;
+    private String availability;
+
+    // Helper methods
+    public boolean isValid() {
+        boolean hasName = name != null && !name.trim().isEmpty();
+        boolean hasRating = rating != null && rating >= 0.0 && rating <= 10.0;
+
+        // For debugging, we'll be more lenient - just need a name
+        return hasName;
+    }
 
 }

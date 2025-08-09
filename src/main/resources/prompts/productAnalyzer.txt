@@ -1,0 +1,9 @@
+I have a product from Amazon with the following reviews:
+{reviews}
+Please analyze these reviews and provide the following information in this exact format:
+PROS:- [list each pro as a short bullet point, if no pros are found print No pros found]
+CONS:- [list each con as a short bullet point, if no cons are found print No cons found]
+VERDICT:-[one-line verdict whether the product is worth buying or not, you have to print a verdict always]
+RATING:-[rating out of 10 as a decimal number with 2 digits after point and this is compulsory and give it based on number of reviews and number of pros and cons, make sure to be precise and diversely rate it
+an example would be '8.45', that's all nothing else should be printed.]
+Do not include any introductory statements or additional text.
