@@ -6,7 +6,7 @@
 ![Spring AI](https://img.shields.io/badge/Spring%20AI-1.0.0-9cf)
 ![Selenium](https://img.shields.io/badge/Selenium-4.10.0-green.svg)
 
-Smart Product Analyzer basically asks you for a url or description of a product and builds the search url on amazon and then scrapes the best products on the search page. It scrapes the information of the best products and then distinguishes pros and cons, then sorts it and gives the best product available for you to purchase.
+The **Smart Product Analyzer** accepts a product URL or a text description, automatically builds a targeted Amazon search, and scrapes the top results. It then analyzes this information, distinguishes the pros and cons, and recommends the best available product.
 
 The **Smart Product Analyzer** is a sophisticated Spring Boot application that leverages AI to transform natural language queries into detailed e-commerce product analyses. It can analyze products directly from a URL or intelligently search for a product based on a description, scrape the results, and deliver a comprehensive summary including pros, cons, a final verdict, and a rating.
 
