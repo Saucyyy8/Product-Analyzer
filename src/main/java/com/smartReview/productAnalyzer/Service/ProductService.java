@@ -380,39 +380,56 @@ public class ProductService {
     private void parseAnalysisResponse(Product product, String aiResponse) {
         log.info("Parsing AI response: {}", aiResponse);
         
-        String[] sections = aiResponse.split("(?=PROS:|CONS:|VERDICT:|RATING:)");
-        log.info("Found {} sections in AI response", sections.length);
-
-        for (String section : sections) {
-            String trimmedSection = section.trim();
-            log.debug("Processing section: {}", trimmedSection);
-
-            if (trimmedSection.startsWith("PROS: ")) {
-                List<String> pros = parseListItems(trimmedSection.replace("PROS: ", "").trim());
-                product.setPros(pros);
-                log.info("Set pros: {}", pros);
+        // Extract each section using regex patterns
+        String prosPattern = "PROS:\\s*([\\s\\S]*?)(?=CONS:|VERDICT:|RATING:|$)";
+        String consPattern = "CONS:\\s*([\\s\\S]*?)(?=VERDICT:|RATING:|$)";
+        String verdictPattern = "VERDICT:\\s*([\\s\\S]*?)(?=RATING:|$)";
+        String ratingPattern = "RATING:\\s*([\\s\\S]*?)(?=\\s*$)";
+        
+        // Extract pros
+        java.util.regex.Pattern prosRegex = java.util.regex.Pattern.compile(prosPattern, java.util.regex.Pattern.CASE_INSENSITIVE);
+        java.util.regex.Matcher prosMatcher = prosRegex.matcher(aiResponse);
+        if (prosMatcher.find()) {
+            String prosText = prosMatcher.group(1).trim();
+            List<String> pros = parseListItems(prosText);
+            product.setPros(pros);
+            log.info("Set pros: {}", pros);
+        }
+        
+        // Extract cons
+        java.util.regex.Pattern consRegex = java.util.regex.Pattern.compile(consPattern, java.util.regex.Pattern.CASE_INSENSITIVE);
+        java.util.regex.Matcher consMatcher = consRegex.matcher(aiResponse);
+        if (consMatcher.find()) {
+            String consText = consMatcher.group(1).trim();
+            List<String> cons = parseListItems(consText);
+            product.setCons(cons);
+            log.info("Set cons: {}", cons);
+        }
+        
+        // Extract verdict
+        java.util.regex.Pattern verdictRegex = java.util.regex.Pattern.compile(verdictPattern, java.util.regex.Pattern.CASE_INSENSITIVE);
+        java.util.regex.Matcher verdictMatcher = verdictRegex.matcher(aiResponse);
+        if (verdictMatcher.find()) {
+            String verdict = verdictMatcher.group(1).trim();
+            product.setVerdict(verdict);
+            log.info("Set verdict: {}", verdict);
+        }
+        
+        // Extract rating
+        java.util.regex.Pattern ratingRegex = java.util.regex.Pattern.compile(ratingPattern, java.util.regex.Pattern.CASE_INSENSITIVE);
+        java.util.regex.Matcher ratingMatcher = ratingRegex.matcher(aiResponse);
+        if (ratingMatcher.find()) {
+            try {
+                String ratingStr = ratingMatcher.group(1).trim();
+                // Remove any non-numeric characters except decimal point
+                ratingStr = ratingStr.replaceAll("[^0-9.]", "");
+                Double rating = Double.parseDouble(ratingStr);
+                product.setRating(rating);
+                log.info("Set rating: {}", rating);
             }
-            else if (trimmedSection.startsWith("CONS: ")) {
-                List<String> cons = parseListItems(trimmedSection.replace("CONS: ", "").trim());
-                product.setCons(cons);
-                log.info("Set cons: {}", cons);
-            }
-            else if (trimmedSection.startsWith("VERDICT: ")) {
-                String verdict = trimmedSection.replace("VERDICT: ", "").trim();
-                product.setVerdict(verdict);
-                log.info("Set verdict: {}", verdict);
-            }
-            else if (trimmedSection.startsWith("RATING: ")) {
-                try {
-                    String ratingStr = trimmedSection.replace("RATING: ", "").trim();
-                    Double rating = Double.parseDouble(ratingStr);
-                    product.setRating(rating);
-                    log.info("Set rating: {}", rating);
-                }
-                catch (NumberFormatException e) {
-                    log.warn("Invalid rating value: {}", trimmedSection);
-                    product.setRating(0.0);
-                }
+            catch (NumberFormatException e) {
+                log.warn("Invalid rating value: {}", ratingMatcher.group(1));
+                product.setRating(0.0);
             }
         }
     }
@@ -441,7 +458,7 @@ public class ProductService {
     private void setDefaultAnalysis(Product product) {
         product.setPros(List.of("No reviews available"));
         product.setCons(List.of("No reviews available"));
-        product.setVerdict("Unable to provide analysis due to lack of reviews");
+        product.setVerdict("Unable to provide analysis due to lack of reviews or AI error.");
         product.setRating(0.0);
     }
 

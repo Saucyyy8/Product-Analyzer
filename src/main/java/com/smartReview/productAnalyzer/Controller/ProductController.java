@@ -64,7 +64,7 @@ public class ProductController {
 
         try {
             Product result = service.analyzeLink(request.getInput());
-            log.info("Product URL analysis completed successfully for: {}", result.getName());
+            log.info("Product URL analysis completed successfully for: {}", result);
             return ResponseEntity.ok(result);
 
         }

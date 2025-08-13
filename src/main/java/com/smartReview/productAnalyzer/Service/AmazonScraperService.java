@@ -94,7 +94,6 @@ public class AmazonScraperService {
     private List<String> extractProductReviews(WebDriverWait wait) {
         try {
             //List<String> reviews = new ArrayList<>();
-            
             log.info("Starting review extraction for URL: {}", webDriver.getCurrentUrl());
             
             // Simple approach: try to extract any text that looks like a review
