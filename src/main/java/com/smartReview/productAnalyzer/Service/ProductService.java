@@ -7,6 +7,7 @@ import com.smartReview.productAnalyzer.Exception.ScrapingException;
 import com.smartReview.productAnalyzer.Model.Product;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.net.URLEncoder;
@@ -28,6 +29,7 @@ public class ProductService {
         this.searchScraperService = searchScraperService;
         this.aiService = aiService;
     }
+    @Cacheable("Product")
     public Product analyzeProduct(String productDescription) {
         log.info("Starting product analysis for description: {}", productDescription);
 
@@ -113,7 +115,7 @@ public class ProductService {
             throw new ScrapingException("Failed to analyze product: " + e.getMessage(), e);
         }
     }
-
+    @Cacheable("Product")
     public Product analyzeLink(String link) {
         log.info("Starting product analysis for URL: {}", link);
 
