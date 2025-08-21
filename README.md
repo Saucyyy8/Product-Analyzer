@@ -70,6 +70,7 @@ This is the advanced, AI-driven workflow. You provide a text query, and the appl
 | **Utilities** | Lombok, Jackson                                                                     |
 | **Build Tool** | Maven                                                                               |
 | **Exceptions** | Custom exceptions (`ScrapingException`, `ProductNotFound`, etc.) |
+| **Cache** | Caffeine |
 
 ---
 
@@ -110,6 +111,12 @@ spring.ai.ollama.chat.model=llama3:latest
 
 # Optional: You can configure model-specific parameters like temperature.
 spring.ai.ollama.chat.options.temperature=0.7
+
+#Added cache
+
+spring.cache.cache-names=Product
+spring.cache.caffeine.spec=expireAfterAccess=60m
+
 ```
 
 ### 3. Run the Application
