@@ -12,6 +12,10 @@ The **Smart Product Analyzer** is a sophisticated Spring Boot application that l
 
 This project demonstrates a powerful integration of web scraping with Large Language Models (LLMs) to create a smart, automated product intelligence tool.
 
+
+https://github.com/user-attachments/assets/df39d72c-dc71-441c-b1c4-e207f626b3bf
+
+
 ---
 
 ## 🚀 Core Features
